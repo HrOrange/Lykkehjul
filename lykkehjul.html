@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<!-- Dette er mit CSS -->
+<style type="text/css">
+  .Wheel{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+  .Pin{
+    display: block;
+    margin-left: 1500px;
+    margin-right: auto;
+    position: absolute;
+    top: -40px;
+  }
+
+  body{
+    background-color: white;
+  }
+
+  .PlayButton{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height:300px;
+    width:500px;
+    font-size: 80px;
+  }
+  div.wrapper{
+    width: 3900px;
+    margin-left: 0px;
+  }
+  .label-big-check {
+  	display: block;
+    padding-left: 700px;
+    margin: 5px;
+  }
+  .label-big-check .check-title {
+    color : black;
+  	font-size: 95px;
+  }
+</style>
+
+<!-- Dette er mit JavaScript -->
+<script>
+var StopAt;
+var CanClickBoxes;
+var CanClickPlayButton = true;
+
+function ResetEverything(){
+  document.getElementById("option_1").checked = false;
+  document.getElementById("option_2").checked = false;
+  document.getElementById("option_3").checked = false;
+  document.getElementById("option_1").disabled = false;
+  document.getElementById("Muligheden1").style.visibility="visible";
+  document.getElementById("option_2").disabled = false;
+  document.getElementById("Muligheden2").style.visibility="visible";
+  document.getElementById("option_3").disabled = false;
+  document.getElementById("Muligheden3").style.visibility="visible";
+  document.getElementById("RightAnswer").innerHTML = "";
+  document.getElementById("Questions").innerHTML = "Questions";
+  document.getElementById("Tip").innerHTML = "";
+}
+
+function AskQuestion(){
+  if(CanClickPlayButton == true){
+    ResetEverything();
+    StopAt = Math.floor((Math.random() * 400) + 100);
+    document.getElementById("ThePlayButton").innerHTML = "Wait for Question";
+    CanClickPlayButton = false;
+
+    rotateAnimation("MyWheel", 10);
+  }
+}
+
+var looper;
+var degrees = 0;
+
+function rotateAnimation(el,speed){
+  	var elem = document.getElementById(el);
+  	if(navigator.userAgent.match("Chrome")){
+  		elem.style.WebkitTransform = "rotate("+degrees+"deg)";
+  	} else if(navigator.userAgent.match("Firefox")){
+  		elem.style.MozTransform = "rotate("+degrees+"deg)";
+  	} else if(navigator.userAgent.match("MSIE")){
+  		elem.style.msTransform = "rotate("+degrees+"deg)";
+  	} else if(navigator.userAgent.match("Opera")){
+  		elem.style.OTransform = "rotate("+degrees+"deg)";
+  	} else {
+  		elem.style.transform = "rotate("+degrees+"deg)";
+  	}
+  	looper = setTimeout('rotateAnimation(\''+el+'\','+speed+')',speed);
+  	degrees++;
+    StopAt--;
+    if(StopAt == 0){
+      clearTimeout(looper);
+      document.getElementById("ThePlayButton").innerHTML = "Answer";
+      CanClickBoxes = true;
+      if(degrees >= 36 && degrees <= 108){
+        AskQuestionToStat();
+      } else if(degrees >= 108 && degrees <= 180){
+        AskQuestionToHist();
+      } else if(degrees >= 180 && degrees <= 252){
+        AskQuestionToÅrsager();
+      } else if(degrees >= 252 && degrees <= 324){
+        AskQuestionToSym();
+      } else AskQuestionToFakta();
+    }
+  	if(degrees > 359){
+  		degrees = 1;
+  	}
+  	document.getElementById("status").innerHTML = "rotate("+degrees+"deg)";
+}
+
+var Q;
+var Right;
+var TheTip;
+
+function AskQuestionToFakta(){
+  Q = Math.floor((Math.random() * 6) + 1);
+  if(Q == 1){
+    document.getElementById("Questions").innerHTML = "Hvad er definitionen på stress";
+    document.getElementById("Option1").innerHTML = "Psykisk og fysisk anspændthed forårsaget af et for stort tids- eller arbejdspres";
+    document.getElementById("Option2").innerHTML = "Psykisk og fysisk anspændthed forårsaget af et for stort arbejdspres";
+    document.getElementById("Option3").innerHTML = "Fysisk anspændthed forårsaget af et for stort tids- eller arbejdspres";
+    Right = 1;
+    TheTip = "";
+  }
+  else if(Q == 2){
+    document.getElementById("Questions").innerHTML = "Er det altid dårligt at være stressede?";
+    document.getElementById("Option1").innerHTML = "Ja";
+    document.getElementById("Option2").innerHTML = "Nej";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 2;
+    TheTip = "Føl dig ikke skidt over at være stressede";
+  }
+  else if(Q == 3){
+    document.getElementById("Questions").innerHTML = "Hvem føler sig mest stressede i disse grupper?";
+    document.getElementById("Option1").innerHTML = "Personer med grundskole som den højeste fuldførte uddannelse";
+    document.getElementById("Option2").innerHTML = "Personer med lange videregående uddannelser";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 2;
+    TheTip = "Endnu en overvejelse du burde tage inden du vælger uddannelse.";
+  }
+  else if(Q == 4){
+    document.getElementById("Questions").innerHTML = "Hvilket af disse udsagn er rigtigt?";
+    document.getElementById("Option1").innerHTML = "Vi føler os mere stressede i dag end vi gjorde for 5 år siden.";
+    document.getElementById("Option2").innerHTML = "Vi føler os mindre stressede i dag end vi gjorde for 5 år siden.";
+    document.getElementById("Option2").innerHTML = "Husk at kravet til dig ikke er større end det var dengang.";
+    RIght = 1;
+    TheTip = "Husk at kravet til dig ikke er større end det var dengang.";
+  }
+  else if(Q == 5){
+    document.getElementById("Questions").innerHTML = "Findes der både kortvarig og langvarig stress?";
+    document.getElementById("Option1").innerHTML = "Ja";
+    document.getElementById("Option2").innerHTML = "Nej";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 1;
+    TheTip = "Husk på stress ikke er det samme for alle. Nogle mennesker har oftere langvarig stress end andre og nogle har oftere kortvarig stress end andre.";
+  }
+  else if(Q == 6){
+    document.getElementById("Questions").innerHTML = "Hvad tror du der kan afhjælpe stress på en sund måde?";
+    document.getElementById("Option1").innerHTML = "Musik";
+    document.getElementById("Option1").innerHTML = "Stoffer";
+    document.getElementById("Option1").innerHTML = "Lukke alt ude og slappe helt af";
+    Right = 3;
+    TheTip = "";
+  }
+}
+function AskQuestionToStat(){
+  Q = Math.floor((Math.random() * 4) + 1);
+
+  if(Q == 1){
+    document.getElementById("Questions").innerHTML = "Hvor mange procent af personer der ryger dagligt, vurderer dem selv til at være stressede?";
+    document.getElementById("Option1").innerHTML = "Ca. 40%";
+    document.getElementById("Option2").innerHTML = "Ca. 20%";
+    document.getElementById("Option3").innerHTML = "Ca. 30%";
+    Right = 3;
+    TheTip = "Der har du endnu en god grund til at stoppe med at ryge.";
+  }
+  else if(Q == 2){
+    document.getElementById("Questions").innerHTML = "Hvem er statistisk set mest stressede blandt de danske unge?";
+    document.getElementById("Option1").innerHTML = "Mænd";
+    document.getElementById("Option2").innerHTML = "Kvinder";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 2;
+    TheTip = "Husk på at nogle mænd stadig kan være mere stressede end kvinder.";
+  }
+  else if(Q == 3){
+    document.getElementById("Questions").innerHTML = "Kvinder bliver statisk set ____ stressede med alderen?";
+    document.getElementById("Option1").innerHTML = "Mindre";
+    document.getElementById("Option2").innerHTML = "Mere";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 1;
+    TheTip = "Husk det ikke altid er gældende.";
+  }
+  else if(Q == 4){
+    document.getElementById("Questions").innerHTML = "Mænd bliver statisk set ____ stressede med alderen?";
+    document.getElementById("Option1").innerHTML = "Mere";
+    document.getElementById("Option2").innerHTML = "Mindre";
+    document.getElementById("option_3").disabled = true;
+    document.getElementById("Muligheden3").style.visibility="hidden";
+    Right = 2;
+    TheTip = "Husk der ikke altid er gældende.";
+  }
+}
+function AskQuestionToHist(){
+  Q = Math.floor((Math.random() * 2) + 1);
+
+  if(Q == 1){
+    document.getElementById("Questions").innerHTML = "Industrialiseringen var et vigtigt punkt i historien, også for stress. Hvad ændrede sig, som påvirkede folks stressniveau?";
+    document.getElementById("Option1").innerHTML = "Vores kærlighedsliv";
+    document.getElementById("Option2").innerHTML = "Vores levevis";
+    document.getElementById("Option3").innerHTML = "Vores familier";
+    Right = 2;
+    TheTip = "Stress har altid været en ting som plagede mennesker";
+  }
+  else if(Q == 2){
+    document.getElementById("Questions").innerHTML = "Hvad var diagnosen man fik for stress under 1. verdenskrig?";
+    document.getElementById("Option1").innerHTML = "Blodprop";
+    document.getElementById("Option2").innerHTML = "Kramper";
+    document.getElementById("Option3").innerHTML = "Nervesvækkelse";
+    Right = 3;
+    TheTip = "I forhold til dengang, har vi det meget bedre i dag";
+  }
+}
+function AskQuestionToSym(){
+  Q = Math.floor((Math.random() * 3) + 1);
+
+  if(Q == 1){
+    document.getElementById("Questions").innerHTML = "Hvilket stof udløser kroppen når den står i en stressede situation?";
+    document.getElementById("Option1").innerHTML = "Amfetamin";
+    document.getElementById("Option2").innerHTML = "Kortieol";
+    document.getElementById("Option3").innerHTML = "Dopamin";
+    Right = 2;
+    TheTip = "";
+  }
+  else if(Q == 2){
+    document.getElementById("Questions").innerHTML = "Hvilket stof udløser kroppen når den står i en stressede situation?";
+    document.getElementById("Option1").innerHTML = "Adrenalin";
+    document.getElementById("Option2").innerHTML = "Amfetamin";
+    document.getElementById("Option3").innerHTML = "Dopamin";
+    Right = 1;
+    TheTip = "";
+  }
+  else if(Q == 3){
+    document.getElementById("Questions").innerHTML = "Hvilken en af disse symptomer er et typisk tegn på stress?";
+    document.getElementById("Option1").innerHTML = "Vægttab";
+    document.getElementById("Option2").innerHTML = "Opkast";
+    document.getElementById("Option3").innerHTML = "Blodprop";
+    Right = 1;
+    TheTip = "Vær ikke paranoid. Selvom du f.eks. lider af vægttab, betyder det ikke nødvendigvis, at du lider af stress.";
+  }
+}
+function AskQuestionToÅrsager(){
+  Q = Math.floor((Math.random() * 2) + 1);
+
+  if(Q == 1){
+    document.getElementById("Questions").innerHTML = "Hvilken af disse scenarier kunne give stress?";
+    document.getElementById("Option1").innerHTML = "For lidt fysisk udfoldelse";
+    document.getElementById("Option2").innerHTML = "For meget alkohol i hverdagen";
+    document.getElementById("Option3").innerHTML = "For mange forventninger til en selv";
+    Right = 3;
+    TheTip = "Ens liv kan ikke og vil aldrig blive perfekt, så der er ingen grund til at trist over de små ting i dit liv.";
+  }
+  else if(Q == 2){
+    document.getElementById("Questions").innerHTML = "Hvad tror du gør unge mest stresset?";
+    document.getElementById("Option1").innerHTML = "Hyggetur med vennerne";
+    document.getElementById("Option2").innerHTML = "Opkommende eksamener";
+    document.getElementById("Option3").innerHTML = "Sommerferie";
+    Right = 2;
+    TheTip = "";
+  }
+}
+
+
+function CheckIfRight(box){
+  if(box == 1){
+    document.getElementById("option_2").checked = false;
+    document.getElementById("option_3").checked = false;
+  }
+  else if(box == 2){
+    document.getElementById("option_1").checked = false;
+    document.getElementById("option_3").checked = false;
+  }
+  else if(box == 3){
+    document.getElementById("option_1").checked = false;
+    document.getElementById("option_2").checked = false;
+  }
+
+  if(CanClickBoxes == true){
+    if(box == Right){
+      document.getElementById("RightAnswer").innerHTML = "Korrekt";
+    } else {
+      document.getElementById("RightAnswer").innerHTML = "Forkert. Det rigtige svar var: " + document.getElementById("Option" + Right).innerHTML;
+    }
+
+    document.getElementById("Tip").innerHTML = TheTip;
+    document.getElementById("ThePlayButton").innerHTML = "Try Again";
+
+    CanClickBoxes = false;
+    CanClickPlayButton = true;
+  }
+}
+</script>
+
+<!-- Dette er mit HTML -->
+<html>
+<head>
+<body>
+
+<image id="MyWheel" class="Wheel" src="færdige lykkehjul.png" width="2000" height="2000"></image>
+<image id="MyPin" class="Pin" src="færdige lykkehjul træpind.png" width="2000" height="2000"></image>
+
+<br><button class="PlayButton" id= "ThePlayButton" onclick="AskQuestion()">Play</button></br>
+
+<div class="wrapper">
+  <label class="label-big-check">
+    <label for="option_1" class="check-title" id="Questions">Questions</label>
+  </label>
+
+  <label class="label-big-check" id="Muligheden1">
+  	<input type="checkbox" value="1" name="option_1" id="option_1" onclick="if(this.checked){CheckIfRight(1)}"style="width:90px;height: 90px;"/>
+  	<label for="option_1" class="check-title" id="Option1">Option 1</label>
+  </label>
+  <!--/.label-big-check-->
+
+  <label class="label-big-check" id="Muligheden2">
+  	<input type="checkbox" value="1" name="option_2" id="option_2" onclick="if(this.checked){CheckIfRight(2)}" style="width:90px;height:90px;"/>
+  	<label for="option_2" class="check-title" id="Option2">Option 2</label>
+  </label>
+  <!--/.label-big-check-->
+
+  <label class="label-big-check" id="Muligheden3">
+  	<input type="checkbox" value="1" name="option_3" id="option_3" onclick="if(this.checked){CheckIfRight(3)}" style="width:90px;height:90px;"/>
+  	<label for="option_3" class="check-title" id="Option3">Option 3</label>
+  </label>
+
+  <label class="label-big-check">
+  	<br><br><label class="check-title" id="RightAnswer"></label></br></br>
+  </label>
+
+  <label class="label-big-check">
+  	<br><br><br><br><br><label class="check-title" id="Tip">Tips</label></br></br></br></br></br>
+  </label>
+</div>
+</body>
+</head>
+</html>
